@@ -4,12 +4,13 @@ import dotenv from "dotenv";
 import signup from "./routes/signup";
 import signin from "./routes/signin";
 import connectToMongoDB from './config/databse';
+import cors from 'cors';
 dotenv.config();
 
 const app = express();
 app.use(bodyParser.json());
 connectToMongoDB();
-
+app.use(cors());
 const base = "/demo";
 
 app.use(base, signup);
