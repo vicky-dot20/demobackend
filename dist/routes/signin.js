@@ -15,13 +15,18 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = __importDefault(require("express"));
 const signup_model_1 = __importDefault(require("../models/signup_model"));
 const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
+const bcrypt_1 = __importDefault(require("bcrypt"));
 const router = express_1.default.Router();
 router.post('/signin', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const { email, password } = req.body;
         const user = yield signup_model_1.default.findOne({ email });
-        if (password !== (user === null || user === void 0 ? void 0 : user.password)) {
+        const passwordMatch = bcrypt_1.default.compareSync(password, user === null || user === void 0 ? void 0 : user.password);
+        if (!passwordMatch) {
             return res.status(400).json({ message: "inavlid password" });
+        }
+        if (!(user === null || user === void 0 ? void 0 : user.isVerified)) {
+            return res.status(400).json({ message: "user is not verified" });
         }
         const body = {
             _id: user === null || user === void 0 ? void 0 : user._id,

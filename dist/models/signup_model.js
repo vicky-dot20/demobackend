@@ -13,6 +13,18 @@ const userSchema = new mongoose_1.default.Schema({
     },
     password: {
         type: String
+    },
+    isVerified: {
+        type: Boolean,
+        default: false
+    },
+    otp: {
+        type: String,
+        //required:true
+    },
+    otpExpires: {
+        type: Date,
+        required: true
     }
 });
 exports.default = mongoose_1.default.model('demoUser', userSchema);
